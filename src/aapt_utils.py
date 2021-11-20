@@ -22,14 +22,8 @@ def run_command(command):
 
 def get_package_name(apk_path: str) -> str:
     command = [conf.AAPT_PATH, 'dump', 'badging', apk_path]
-    output = runCommand(command).decode(encoding)
+    output = run_command(command).decode(encoding)
     return findall("(?<=package: name=')[^']*", output)[0]
-
-
-def get_launchable_activity_list(apk_path: str) -> List[str]:
-    command = [conf.AAPT_PATH, 'dump', 'badging', apk_path]
-    output = runCommand(command).decode(encoding)
-    return findall("(?<=launchable-activity: name=')[^']*", output)
 
 
 def get_tgt_sdk_version(apk_path: str) -> int:
