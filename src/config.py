@@ -33,12 +33,21 @@ class GpapiSettings:
     TIMEZONE = "America/Chicago"
 
 
-class LoginCredentials:
-    # Make sure that all of these are set already
+class GpLoginCredentials:
+    # Make sure that these environment variables are set already
     EMAIL = "GPAPI_EMAIL"
     PASSWORD = "GPAPI_PASSWORD"
     GSFID = "GPAPI_GSFID"
     TOKEN = "GPAPI_TOKEN"
+
+
+# ----------------------------------- #
+#   AndroZoo (AZ) Related Variables   #
+# ----------------------------------- #
+class AzCredentials:
+    # Make sure that these environment variables are set already
+    API_KEY = "AZ_API_KEY"
+    INPUT_FILE = "AZ_INPUT_FILE"
 
 
 # ------------- #

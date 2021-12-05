@@ -9,10 +9,11 @@ from typing import Tuple
 from gpapi.googleplay import GooglePlayAPI
 
 # Local package
-from src.config import LoginCredentials as LC
+from src.config import GpLoginCredentials as LC
 from src.config import GpapiSettings as GS
 from src.parser import *
 import src.aapt_utils as aapt
+import src.az_utils as az
 import src.config as cfg
 from src.logger import Logger
 
@@ -66,6 +67,44 @@ class Downloader:
 
         elif self._mode == Downloader.MODE_AZ:
             self._download_az(pkg_name, output_path, sdk_version)
+
+    def download_all(self,
+                     pkg_list: list,
+                     output_path: str,
+                     sdk_version: int = None) -> None:
+
+        if self._mode == Downloader.MODE_GPAPI:
+            vc_parser = VersionCodeParser.get_instance(sdk_version)
+
+            for pkg_name, cat in pkg_list:
+                vc_found = vc_parser.find_version_code(pkg_name)
+
+                # Set output path
+                out_cat_dir = os.path.join(output_path, cat)
+                if not os.path.exists(out_cat_dir): os.mkdir(out_cat_dir)
+
+                # Download each app
+                res, err, vc = self._download_gpapi(pkg_name,
+                                                    out_cat_dir,
+                                                    sdk_version=sdk_version,
+                                                    vc=vc_found,
+                                                    enable_sleep=True)
+
+                # Download succeeded (only for GPAPI)
+                sdk_d = vc_parser.VersionCodeData(pkg_name, cat, str(res),
+                                                  "" if not err else err,
+                                                  "" if not vc else str(vc))
+                vc_parser.write(sdk_d)
+
+                # Sleep awhile for download fails
+                if err and "busy" in err.lower():
+                    time.sleep(cfg.SLEEP_WAIT_SERVER)
+
+        elif self._mode == Downloader.MODE_AZ:
+            pkgs = {}
+            for pkg_name, cat in pkg_list:
+                # Donwload app in using AndroZoo
+                az.download(pkg_name, output_path, sdk_version)
 
     """ 
         Download the app paackage to the given path with Google Play API
@@ -200,6 +239,9 @@ class Downloader:
                      pkg_name: str,
                      output_path: str,
                      sdk_version: int = None) -> bool:
+
+        sdk_version_date = cfg.SDK_VERSION_DATE[sdk_version]
+
         pass
 
     @staticmethod

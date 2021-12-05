@@ -13,19 +13,26 @@ import src.config as cfg
 class AppDataParser:
     """ Categories to Parse """
     global APP_NAME, PACKAGE, CATEGORY, RATING, RATING_COUNT
-    global SIZE, LAST_UPDATED, FREE, INSTALLS
+    global SIZE, RELEASE, LAST_UPDATED, FREE, INSTALLS
     APP_NAME = "App Name"
     PACKAGE = "App Id"
     CATEGORY = "Category"
     RATING = "Rating"
     RATING_COUNT = "Rating Count"
     SIZE = "Size"
+    RELEASE = 'Released'
     LAST_UPDATED = "Last Updated"
     FREE = "Free"
     INSTALLS = "Installs"
 
-    def __init__(self, top_num: int = 100, free_only: bool = True) -> None:
+    def __init__(self,
+                 top_num: int = 100,
+                 min_release_date: str = None,
+                 cut_for_cat: bool = True,
+                 free_only: bool = True) -> None:
         self._top_num = top_num
+        self._min_release_date = min_release_date
+        self._cut_for_cat = cut_for_cat
         self._free_only = free_only
 
     """ Parse all CSV files under the given directory """
@@ -46,13 +53,25 @@ class AppDataParser:
                 data[cat] = data[cat] + partial_data[cat]
 
         # Sort each category
-        result = {}
-        for cat in data.keys():
-            sorted_data = \
-                    sorted(data[cat], key=lambda d: d[INSTALLS], reverse=True)
+        if self._cut_for_cat:
+            result = {}
+            for cat in data.keys():
+                sorted_data = \
+                        sorted(data[cat], key=lambda d: d[INSTALLS], reverse=True)
 
-            result[cat] = sorted_data[:self._top_num] \
-                    if len(sorted_data) > self._top_num else sorted_data
+                result[cat] = sorted_data[:self._top_num] \
+                        if len(sorted_data) > self._top_num else sorted_data
+
+        else:
+            all_data = []
+            for cat in data.keys():
+                all_data += data[cat]
+
+            sorted_data = sorted(all_data,
+                                 key=lambda d: d[INSTALLS],
+                                 reverse=True)
+            result = sorted_data[:self._top_num] \
+                        if len(sorted_data) > self._top_num else sorted_data
 
         return result
 
@@ -82,6 +101,7 @@ class AppDataParser:
                 rating = row_dict[RATING]
                 rating_count = row_dict[RATING_COUNT]
                 size = row_dict[SIZE]
+                release = row_dict[RELEASE]
                 last_updated = row_dict[LAST_UPDATED]
                 free = eval(row_dict[FREE])
                 installs = int(row_dict[INSTALLS][:-1].replace(',', '')
@@ -92,6 +112,11 @@ class AppDataParser:
                 if self._free_only and not free:
                     continue
 
+                # Check release date
+                if self._min_release_date and \
+                        self._convert_date(release) > self._min_release_date:
+                    continue
+
                 if not category in data:
                     data[category] = []
                 data[category].append({
@@ -100,6 +125,7 @@ class AppDataParser:
                     CATEGORY: category,
                     RATING: rating,
                     SIZE: size,
+                    RELEASE: release,
                     LAST_UPDATED: last_updated,
                     FREE: free,
                     INSTALLS: installs
@@ -127,6 +153,36 @@ class AppDataParser:
             return False
         else:
             return True
+
+    def _convert_date(self, date: str) -> str:
+        months = {
+            'Jan': '01',
+            'Feb': '02',
+            'Mar': '03',
+            'Apr': '04',
+            'May': '05',
+            'Jun': '06',
+            'Jul': '07',
+            'Aug': '08',
+            'Sep': '09',
+            'Oct': '10',
+            'Nov': '11',
+            'Dec': '12'
+        }
+
+        try:
+            year = date.split(', ')[1]
+            month = months[date.split(', ')[0].split(' ')[0]]
+            date = date.split(', ')[0].split(' ')[1]
+            if int(date) < 10:
+                date = '0' + date
+            converted = '%s-%s-%s' % (year, month, date)
+
+        except Exception as e:
+            # Return a date with large numbers
+            converted = '2050-12-12'
+
+        return converted
 
 
 class VersionCodeParser:
@@ -216,12 +272,23 @@ class VersionCodeParser:
             f.write(",".join(l) + "\n")
 
 
-# TEST
+# -------- #
+#   TEST   #
+# -------- #
 '''
-p = AppDataParser()
+# Cut for each category
+p = AppDataParser(top_num=100, cut_for_cat=True)
 data = p.parse_all('data/app_list/2021-06-15')
 for cat in data.keys():
     print("\n[ %s ] - %d" %(cat, len(data[cat])))
     for app in data[cat]:
         print(app)
+'''
+'''
+# Cut for without category
+p = AppDataParser(top_num=500, min_release_date=cfg.SDK_VERSION_DATE[15],
+        cut_for_cat=False)
+data = p.parse_all('../data/app_list/2021-06-15')
+for idx, item in enumerate(data):
+    print('%s' %(item))
 '''
