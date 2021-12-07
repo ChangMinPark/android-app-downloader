@@ -33,16 +33,16 @@ def main():
     - from a given package list for the target SDK version
     '''
     # Settings
-    tgt_sdk_version = 16
+    sdk_versions = [15, 16]
     mode = Downloader.MODE_AZ
 
     # Set output path
-    out_dir = os.path.join(os.path.abspath(cfg.OUT), str(tgt_sdk_version))
+    out_dir = os.path.join(os.path.abspath(cfg.OUT))
     if not os.path.exists(out_dir): os.mkdir(out_dir)
 
     # Read the given list of packages
     pkg_list = []  # [(pkg_name, cat), ...]
-    app_list_file = 'temp/app_list_api_15/top_100_apps_list_pkg_name_with_category'
+    app_list_file = 'temp/app_list_api_15/top_100_apps_list_pkg_name_with_category2'
     with open(app_list_file, 'r') as f:
         for line in f.readlines():
             splitted = line.strip().split(',')
@@ -52,7 +52,7 @@ def main():
 
     # Start downloading
     d = Downloader(mode)
-    d.download_all(pkg_list, out_dir, sdk_version=tgt_sdk_version)
+    d.download_all(pkg_list, out_dir, sdk_versions=sdk_versions)
     logger.info("Completed.")
     '''
     Download apps using AndroZoo
