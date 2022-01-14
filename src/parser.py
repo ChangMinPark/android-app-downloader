@@ -283,8 +283,7 @@ for cat in data.keys():
     print("\n[ %s ] - %d" %(cat, len(data[cat])))
     for app in data[cat]:
         print(app)
-'''
-'''
+
 # Cut for without category
 p = AppDataParser(top_num=500, min_release_date=cfg.SDK_VERSION_DATE[15],
         cut_for_cat=False)

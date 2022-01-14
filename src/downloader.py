@@ -6,7 +6,7 @@ import os
 import math
 import time
 from typing import Tuple
-from gpapi.googleplay import GooglePlayAPI
+from src.gpapi.googleplay import GooglePlayAPI
 
 # Local package
 from src.config import GpLoginCredentials as LC
@@ -56,20 +56,19 @@ class Downloader:
         self._logger = Logger.get_instance()
         self._logger.info("Google Play login successful")
 
-    def download_all(self,
-                     pkg_list: list,
-                     output_path: str,
-                     sdk_versions: list = None) -> None:
+    def download_all(self, pkg_list: list, output_path: str,
+                     sdk_versions: list) -> None:
 
         if self._mode == Downloader.MODE_GPAPI:
-            vc_parser = VersionCodeParser.get_instance(sdk_version)
+            for sdk_version in sdk_versions:
+                vc_parser = VersionCodeParser.get_instance(sdk_version)
 
-            for pkg_name, cat in pkg_list:
-                for sdk_version in sdpk_versions:
+                for pkg_name, cat in pkg_list:
                     vc_found = vc_parser.find_version_code(pkg_name)
 
                     # Set output path
-                    out_cat_dir = os.path.join(output_path, sdk_version, cat)
+                    out_cat_dir = os.path.join(output_path, str(sdk_version),
+                                               cat)
                     if not os.path.exists(out_cat_dir): os.mkdir(out_cat_dir)
 
                     # Download each app
@@ -114,7 +113,7 @@ class Downloader:
                             vc: str = None) -> Tuple[bool, str]:
             try:
                 if vc:
-                    fl = self._server.download(pkg_name, vc=vc)
+                    fl = self._server.download(pkg_name, versionCode=vc)
                 else:
                     fl = self._server.download(pkg_name)
 
