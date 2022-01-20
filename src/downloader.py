@@ -52,9 +52,9 @@ class Downloader:
                                password=os.environ[LC.PASSWORD],
                                gsfId=os.environ[LC.GSFID],
                                authSubToken=os.environ[LC.TOKEN])
+            self._logger.info("Google Play login successful")
 
         self._logger = Logger.get_instance()
-        self._logger.info("Google Play login successful")
 
     def download_all(self, pkg_list: list, output_path: str,
                      sdk_versions: list) -> None:
@@ -94,6 +94,7 @@ class Downloader:
             for pkg_name, cat in pkg_list:
                 # Donwload app in using AndroZoo
                 az.download(pkg_name, output_path, sdk_versions)
+                time.sleep(600)
 
     """ 
         Download the app paackage to the given path with Google Play API

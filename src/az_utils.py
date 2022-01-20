@@ -37,8 +37,8 @@ def download(pkg_name: str, out_dir: str, sdk_versions: list) -> bool:
 
     # Download all app versions that are after targetted sdk release date
     logger.info("Downloading %s ..." % (pkg_name))
-    #sdk_release_date = cfg.SDK_VERSION_DATE[sdk_version]
-    sdk_release_date = '2008-09-23'
+    sdk_versions.sort()
+    sdk_release_date = cfg.SDK_VERSION_DATE[sdk_versions[0]]
     command = [
         cfg.AZ, '-k', os.environ[AC.API_KEY], '-i', os.environ[AC.INPUT_FILE],
         '-d', sdk_release_date + ':', '-pn', pkg_name, '-m', 'play.google.com',
