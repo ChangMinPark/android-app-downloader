@@ -149,7 +149,7 @@ class AppDataParser:
             return False
         elif row_dict[PACKAGE] == "" or row_dict[APP_NAME] == "":
             return False
-        elif row_dict[SIZE] == "" or not row_dict[SIZE].endswith('M'):
+        elif row_dict[SIZE] == "":
             return False
         else:
             return True
