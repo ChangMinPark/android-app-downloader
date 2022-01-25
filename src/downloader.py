@@ -57,8 +57,9 @@ class Downloader:
 
         self._logger = Logger.get_instance()
 
+
     def download_all(self, pkg_list: list, output_path: str,
-                     sdk_versions: list) -> None:
+            sdk_versions: list, exact_sdk_version: bool=False) -> None:
 
         if self._mode == Downloader.MODE_GPAPI:
             for sdk_version in sdk_versions:
@@ -77,6 +78,7 @@ class Downloader:
                         pkg_name,
                         out_cat_dir,
                         sdk_version=sdk_version,
+                        exact_sdk_version=exact_sdk_version,
                         vc=vc_found,
                         enable_sleep=True)
 
@@ -90,12 +92,14 @@ class Downloader:
                     if err and "busy" in err.lower():
                         time.sleep(cfg.SLEEP_WAIT_SERVER)
 
+
         elif self._mode == Downloader.MODE_AZ:
             pkgs = {}
             for pkg_name, cat in pkg_list:
                 # Donwload app in using AndroZoo
                 az.download(pkg_name, output_path, sdk_versions)
                 time.sleep(600)
+
 
     """ 
         Download the app paackage to the given path with Google Play API

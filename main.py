@@ -20,7 +20,7 @@ def main():
     '''
     # Settings
     sdk_versions = [27]
-    mode = Downloader.MODE_AZ
+    mode = Downloader.MODE_GPAPI
 
     # Set output path
     out_dir = os.path.join(os.path.abspath(cfg.OUT))
@@ -28,7 +28,7 @@ def main():
 
     # Read the given list of packages
     pkg_list = []  # [(pkg_name, cat), ...]
-    app_list_file = 'temp/app_list_api_27/top_500_apps_list_pkg_name_with_category_rest'
+    app_list_file = 'data/app_list/app_list_api_27/top_500_apps_no_target'
     with open(app_list_file, 'r') as f:
         for line in f.readlines():
             splitted = line.strip().split(',')
