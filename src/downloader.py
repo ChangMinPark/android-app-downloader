@@ -32,7 +32,8 @@ class Downloader:
 
         # Check environment variables
         envs_names = [LC.EMAIL, LC.PASSWORD, LC.GSFID, LC.TOKEN]
-        if not all([True if v in os.environ else False for v in envs_names]):
+        if mode == Downloader.MODE_GPAPI and \
+                not all([True if v in os.environ else False for v in envs_names]):
             sys.exit("Please set global variables for:\n  - " +
                      str(envs_names))
 
