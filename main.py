@@ -8,7 +8,6 @@ from src.logger import Logger
 from src.parser import *
 import src.config as cfg
 from src.downloader import Downloader
-import src.az_utils as az
 
 logger = Logger.get_instance()
 
@@ -28,7 +27,7 @@ def main():
 
     # Read the given list of packages
     pkg_list = []  # [(pkg_name, cat), ...]
-    app_list_file = 'data/app_list/app_list_api_27/top_500_apps_no_target'
+    app_list_file = 'data/app_list/app_list_api_27/top_500_apps_no_target_with_category'
     with open(app_list_file, 'r') as f:
         for line in f.readlines():
             splitted = line.strip().split(',')
@@ -37,8 +36,9 @@ def main():
             pkg_list.append((splitted[0], splitted[1]))
 
     # Start downloading
-    d = Downloader(mode)
-    d.download_all(pkg_list, out_dir, sdk_versions=sdk_versions)
+    d = Downloader(mode, sdk_versions=sdk_versions, sdk_version_match=False)
+    d.download_all(pkg_list, out_dir)
+
     logger.info("Completed.")
 
 

@@ -25,14 +25,17 @@ APP_VERSION_CODE_DATA = os.path.join(DATA, "app_version_code")
 RESULT = "result.txt"
 
 
-# --------------------------------------------- #
-#   Google Play API (GPAPI) Related Variables   #
-# --------------------------------------------- #
+# ---------------------------------------- #
+#   Settings for Google Play API (GPAPI)   #
+# ---------------------------------------- #
 class GpapiSettings:
     LOCALE = "us_US"
     TIMEZONE = "America/Chicago"
 
 
+# ---------------------------------- #
+#   Environment Variables Required   #
+# ---------------------------------- #
 class GpLoginCredentials:
     # Make sure that these environment variables are set already
     EMAIL = "GPAPI_EMAIL"
@@ -41,11 +44,12 @@ class GpLoginCredentials:
     TOKEN = "GPAPI_TOKEN"
 
 
-# ----------------------------------- #
-#   AndroZoo (AZ) Related Variables   #
-# ----------------------------------- #
 class AzCredentials:
     # Make sure that these environment variables are set already
+    # - API_KEY: please refer a below website to request the key.
+    #            https://androzoo.uni.lu/access
+    # - INPUT_FILE: the latest input dataset can be found from a below website.
+    #               https://androzoo.uni.lu/lists
     API_KEY = "AZ_API_KEY"
     INPUT_FILE = "AZ_INPUT_FILE"
 

@@ -26,3 +26,13 @@ def get_tgt_sdk_version(apk_path: str) -> int:
         return -1
     else:
         return int(v[0])
+
+
+def get_min_sdk_version(apk_path: str) -> int:
+    command = [conf.AAPT_PATH, 'dump', 'badging', apk_path]
+    output = common.run_command(command).decode(encoding)
+    v = findall("(?<=sdkVersion:')[^']*", output)
+    if v == None or len(v) == 0:
+        return -1
+    else:
+        return int(v[0])
