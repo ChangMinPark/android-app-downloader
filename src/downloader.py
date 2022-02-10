@@ -314,11 +314,19 @@ class Downloader:
 
         # Download all app versions that are after targetted sdk release date
         self._logger.info("Downloading %s ..." % (pkg_name))
+        sdk_release_date = '2008-09-23'
+        #command = [
+        #    cfg.AZ, '-k', os.environ[AZ_C.API_KEY], '-i', 
+        #    os.environ[AZ_C.INPUT_FILE], '-d', sdk_release_date + ':', 
+        #    '-pn', pkg_name, '-m', 'play.google.com', '-o', tmp_out
+        #]
+
         command = [
-            cfg.AZ, '-k', os.environ[AZ_C.API_KEY], '-i',
-            os.environ[AZ_C.INPUT_FILE], '-pn', pkg_name, '-m',
-            'play.google.com', '-o', tmp_out
+            cfg.AZ, '-k', os.environ[AZ_C.API_KEY], '-i', 
+            os.environ[AZ_C.INPUT_FILE], 
+            '-pn', pkg_name, '-m', 'play.google.com', '-o', tmp_out
         ]
+
         common.run_command(command)
 
         # Check sdk versions of the downloaded apps
@@ -344,9 +352,10 @@ class Downloader:
                 if sdk_version in found:
                     continue
 
-                if self._check_sdk_version(sdk_version=sdk_version,
-                                           min_sdk_version=min_sdk_app,
-                                           tgt_sdk_version=tgt_sdk_app):
+
+                if self._check_sdk_version(target_sdk=sdk_version,
+                                           min_sdk_app=min_sdk_app,
+                                           tgt_sdk_app=tgt_sdk_app):
                     found.append(sdk_version)
                     out_path_sdk = \
                             os.path.join(out_path, str(sdk_version), '_match') \

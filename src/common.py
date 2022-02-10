@@ -6,6 +6,7 @@ from subprocess import Popen, PIPE
 
 
 def run_command(command):
+    out = ''
     try:
         proc = Popen(command, stdout=PIPE)
         out, err = proc.communicate()
