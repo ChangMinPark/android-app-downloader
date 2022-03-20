@@ -7,7 +7,7 @@ This tool downloads Android app (.apk) for a target SDK version using either [Go
 
 Google Play Store does not provide old versions of an app and keeps only a few versions. If a target SDK version is old, a user should be able to download the app using AndroZoo instead in high chance. Thus, if not downloadable by Google Play API, try with AndroZoo. Our tool automatically handles downloading all available apps and checking their SDK versions.
 
-**_Important Point_** - When downloading an app that has separate app versions supporting each ABI type, do not use AndroZoo since it does not provide any information about which ABI an app supports. A user can use Google Play API to download an app supporting specific ABI by providing _GSFID_ of her device. To get the GSFID, the user needs to register her Google account on the device, and the device's ABI should match with the one that she wants to download. 
+**_Important_** - When downloading an app that has separate app versions supporting each ABI type, do not use AndroZoo since it does not provide any information about which ABI an app supports. A user can use Google Play API to download an app supporting specific ABI by providing _GSFID_ of her device. To get the GSFID, the user needs to register her Google account on the device, and the device's ABI should match with the one that she wants to download. 
 
 
 ## How to Use
