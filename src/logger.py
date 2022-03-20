@@ -1,3 +1,8 @@
+#!/usr/bin/env python3.7
+'''
+@author: Chang Min Park (cpark22@buffalo.edu)
+'''
+
 import logging as lg
 import sys
 

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3.7
 '''
 @author: Chang Min Park (cpark22@buffalo.edu)
 '''
@@ -11,7 +12,9 @@ import src.config as cfg
 
 
 class AppDataParser:
-    """ Categories to Parse """
+    ''' 
+    Categories to Parse
+    '''
     global APP_NAME, PACKAGE, CATEGORY, RATING, RATING_COUNT
     global SIZE, RELEASE, LAST_UPDATED, FREE, INSTALLS
     APP_NAME = "App Name"
@@ -35,10 +38,11 @@ class AppDataParser:
         self._cut_for_cat = cut_for_cat
         self._free_only = free_only
 
-    """ Parse all CSV files under the given directory """
-
     def parse_all(self, path: str) -> dict:
         path = os.path.abspath(path)
+        '''
+        Parse all CSV files under the given directory
+        '''
 
         # Parse each CSV file in the given directory
         print("Parsing ...")
@@ -75,10 +79,10 @@ class AppDataParser:
 
         return result
 
-    """ Parse a single CSV file """
-
     def parse(self, csv_file: str, cut_top_num: bool = True) -> dict:
-
+        '''
+        Parse a single CSV file
+        '''
         # Check whether the given CSV exists
         if not os.path.exists(csv_file):
             sys.exit("Given CSV file doesn't exist: %s" % (csv_file))
@@ -119,6 +123,7 @@ class AppDataParser:
 
                 if not category in data:
                     data[category] = []
+
                 data[category].append({
                     APP_NAME: app_name,
                     PACKAGE: pkg_name,
@@ -143,6 +148,9 @@ class AppDataParser:
         return result
 
     def _check_validity(self, row_dict: dict) -> bool:
+        '''
+        Check validity of the given row dictionary
+        '''
         if row_dict[FREE] != "True" and row_dict[FREE] != "False":
             return False
         elif row_dict[INSTALLS] == "" or not row_dict[INSTALLS].endswith('+'):
@@ -155,6 +163,9 @@ class AppDataParser:
             return True
 
     def _convert_date(self, date: str) -> str:
+        '''
+        Convert the given date to a predefined string format
+        '''
         months = {
             'Jan': '01',
             'Feb': '02',
@@ -183,111 +194,3 @@ class AppDataParser:
             converted = '2050-12-12'
 
         return converted
-
-
-class VersionCodeParser:
-    _instances = {}
-
-    global PACKAGE, CATEGORY, RESULT, ERR_MSG, VERSION_CODE, CATEGORIES
-    PACKAGE = "App Id"
-    CATEGORY = "Category"
-    RESULT = "Result"
-    ERR_MSG = "Error Message"
-    VERSION_CODE = "Version Code"
-    CATEGORIES = [PACKAGE, CATEGORY, RESULT, ERR_MSG, VERSION_CODE]
-
-    class VersionCodeData:
-        def __init__(self, pkg_name: str, cat: str, res: str, err: str,
-                     version_code: str):
-            self._pkg_name = pkg_name
-            self._cat = cat
-            self._res = res
-            self._err = err
-            self._version_code = version_code
-
-    @staticmethod
-    def get_instance(sdk_version: int):
-        if not sdk_version in VersionCodeParser._instances:
-            VersionCodeParser(sdk_version)
-        return VersionCodeParser._instances[sdk_version]
-
-    def __init__(self, sdk_version: int):
-
-        # Create a directory if not eixsts
-        sdk_data_dir = \
-                os.path.join(cfg.APP_VERSION_CODE_DATA, str(sdk_version))
-        if not os.path.exists(sdk_data_dir):
-            os.mkdir(sdk_data_dir)
-
-        # Parse existing data
-        self._found = {}
-        self._path = os.path.join(sdk_data_dir, cfg.RESULT)
-
-        if os.path.exists(self._path):
-            with open(self._path, 'r') as file:
-                for row in csv.DictReader(file):
-                    row_dict = dict(row)
-                    self._found[row_dict[PACKAGE]] = row_dict
-
-        # If not exist, create one and write categories (column)
-        else:
-            with open(self._path, 'w') as file:
-                file.write(','.join(CATEGORIES))
-
-        VersionCodeParser._instances[sdk_version] = self
-
-    """ Find version code for the given package name from parsed data """
-
-    def find_version_code(self, pkg_name: str) -> int:
-
-        # Not found
-        if not pkg_name in self._found \
-                or self._found[pkg_name][VERSION_CODE] == "":
-            return None
-
-        # Found
-        vc_found = self._found[pkg_name][VERSION_CODE]
-        return int(vc_found)
-
-    """ Write newly found version code data """
-
-    def write(self, data: VersionCodeData) -> None:
-
-        if data._pkg_name in self._found:
-            return
-
-        self._found[data._pkg_name] = {
-            PACKAGE: data._pkg_name,
-            CATEGORY: data._cat,
-            RESULT: data._res,
-            ERR_MSG: data._err,
-            VERSION_CODE: data._version_code
-        }
-
-        with open(self._path, "a") as f:
-            l = [
-                data._pkg_name, data._cat, data._res, data._err,
-                data._version_code
-            ]
-            f.write(",".join(l) + "\n")
-
-
-# -------- #
-#   TEST   #
-# -------- #
-'''
-# Cut for each category
-p = AppDataParser(top_num=100, cut_for_cat=True)
-data = p.parse_all('data/app_list/2021-06-15')
-for cat in data.keys():
-    print("\n[ %s ] - %d" %(cat, len(data[cat])))
-    for app in data[cat]:
-        print(app)
-
-# Cut for without category
-p = AppDataParser(top_num=500, min_release_date=cfg.SDK_VERSION_DATE[15],
-        cut_for_cat=False)
-data = p.parse_all('../data/app_list/2021-06-15')
-for idx, item in enumerate(data):
-    print('%s' %(item))
-'''

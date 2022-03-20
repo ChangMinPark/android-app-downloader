@@ -1,0 +1,10 @@
+com.google.android.gms, TOOLS
+com.google.android.apps.maps, TRAVEL_AND_LOCAL
+com.google.android.apps.docs, PRODUCTIVITY
+com.google.android.googlequicksearchbox, TOOLS
+com.google.android.tts, TOOLS
+com.google.android.marvin.talkback, TOOLS
+com.google.android.youtube, VIDEO_PLAYERS
+com.google.android.videos, VIDEO_PLAYERS
+com.google.android.talk, COMMUNICATION
+com.android.chrome, COMMUNICATION

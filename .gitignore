@@ -1,6 +1,7 @@
 # out and temp directory
 out/
 temp/
+.temp_out/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

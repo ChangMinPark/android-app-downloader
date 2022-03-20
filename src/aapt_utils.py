@@ -1,9 +1,10 @@
+#!/usr/bin/env python3.7
 '''
 @author: Chang Min Park (cpark22@buffalo.edu)
 '''
+
 from re import findall
-from subprocess import Popen, PIPE
-from typing import List
+from subprocess import Popen
 
 # Local package
 import src.config as conf

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3.7
 '''
 @author: Chang Min Park (cpark22@buffalo.edu)
 '''
@@ -6,6 +7,7 @@ import os
 # ----------------------- #
 #   Sleep Time Settings   #
 # ----------------------- #
+ENABLE_SLEEP = True
 SLEEP_WAIT_SERVER = 600  # 10 minutes
 NUM_APPS_BETWEEN_SLEEP = 10
 
@@ -20,8 +22,6 @@ AZ = "az"
 # --------------- #
 OUT = "out"
 DATA = "data"
-APP_LIST_DATA = os.path.join(DATA, "app_list")
-APP_VERSION_CODE_DATA = os.path.join(DATA, "app_version_code")
 RESULT = "result.txt"
 
 
@@ -57,7 +57,6 @@ class AzCredentials:
 # ------------- #
 #   Constants   #
 # ------------- #
-
 APP_CATEGORY = {
     # Key: category name, Value: URL name to parse
     "Adventure": "GAME_ADVENTURE",
