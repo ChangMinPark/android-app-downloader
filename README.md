@@ -9,6 +9,7 @@ Google Play Store does not provide old versions of an app and keeps only a few v
 
 **_Important_** - When downloading an app that has separate app versions supporting each ABI type, do not use AndroZoo since it does not provide any information about which ABI an app supports. A user can use Google Play API to download an app supporting specific ABI by providing _GSFID_ of her device. To get the GSFID, the user needs to register her Google account on the device, and the device's ABI should match with the one that she wants to download. 
 
+<br/>
 
 ## How to Use
 
@@ -52,3 +53,11 @@ Check and run **_main.py_** file how it can be used"
 ```sh
 $ python3 main.py
 ```
+
+<br/>
+
+## App List Dataset
+
+In data/app_rank/ directory, we have an app list dataset (06/16/2021) which size is over 600 MB. 
+
+If anyone wants to use the latest version of dataset, please visit [here](https://github.com/gauthamp10/Google-Playstore-Dataset) and follow the instruction to download the latest version.
