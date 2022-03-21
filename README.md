@@ -11,6 +11,14 @@ Google Play Store does not provide old versions of an app and keeps only a few v
 
 <br/>
 
+## App List Dataset
+
+In data/app_rank/ directory, we have an app list dataset (06/16/2021) which size is over 600 MB. 
+
+If anyone wants to use the latest version of dataset, please visit [here](https://github.com/gauthamp10/Google-Playstore-Dataset) and follow the instruction to download the latest version.
+
+<br/>
+
 ## How to Use
 
 ### 1. Prepare Tools Required & Environmental Variables
@@ -54,10 +62,3 @@ Check and run **_main.py_** file how it can be used"
 $ python3 main.py
 ```
 
-<br/>
-
-## App List Dataset
-
-In data/app_rank/ directory, we have an app list dataset (06/16/2021) which size is over 600 MB. 
-
-If anyone wants to use the latest version of dataset, please visit [here](https://github.com/gauthamp10/Google-Playstore-Dataset) and follow the instruction to download the latest version.
