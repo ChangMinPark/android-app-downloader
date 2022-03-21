@@ -12,27 +12,43 @@ Google Play Store does not provide old versions of an app and keeps only a few v
 
 ## How to Use
 
-
 ### 1. Prepare Tools Required & Environmental Variables
 > **Google Play API** - No need to be installed. Already included in our source code. 
->  - dd
+>  - Downloads an app from Google Play Store
+>  - Set environmental variables for login credentials (see _src/config.py_) - [Link](https://developers.google.com/android-publisher/authorization)
+>    - **_GPAPI_EMAIL_**: Account email
+>    - **_GPAPI_PASSWORD_**: Pass word of the account
+>    - **_GPAPI_GSFID_**: Google Services Framework Identifier (GSFID) of your device
+>    - **_GPAPI_TOKEN_**: Google Oauth token
 
-> **AndroZo** - Download from [link](https://androzoo.uni.lu/api_doc)
+> **AndroZoo** - Download from [link](https://androzoo.uni.lu/api_doc)
+>  - Set environmental variables
+>    - **_AZ_API_KEY_**: API key 
+>    - **_AZ_INPUT_FILE_**: Latest input dataset
 
-### 2. Settings
+> **Android Asset Packaging Tool (AAPT)** - Download from [Link](https://androidaapt.com/)
+>  - Requires to depackage downloaded app to check target SDK version
 
 
-### 3. Run
+### 2. Run
 Below is code to use our downloader:
 ```python
 d = Downloader(mode, sdk_version, sdk_version_match)
 d.download_all(pkg_list, out_path)
 ```
-> _mode_ - 
->
-> _sdk_version_ - 
->
-> _sdk_version_match_ - 
->
-> _pkg_list_ - 
+> **_mode_** - Choose which tool to use for downloading: (1) GPAPI (Google API) or (2) AZ (AndroZoo).
 > 
+> **_sdk_version_** - Target SDK version for apps to download.
+> 
+> **_sdk_version_match_** - Whether to check if downloaded app's target SDK exactly matches or not. 
+> If FALSE, look for apps that our target SDK version is within minimum SDK version and target SDK 
+> version of the downloaded apps.
+>
+> **_pkg_list_** - A list of tuples to download, e.g., (package name, app category). 
+
+
+### 3. Test
+Check and run **_main.py_** file how it can be used"
+```sh
+$ python3 main.py
+```
